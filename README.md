@@ -61,10 +61,10 @@ UI风格参考原神,使用Lua开发,支持热更新。
 ![](./Images/UI框架.png)
 UI框架在此项目[liuhaopen/UnityMMO](https://github.com/liuhaopen/UnityMMO.git "")基础上改进
 ## 5.2. 装备词条系统 ##
-![](./Images/装备词条.png)
+![](./Images/装备词条.png)  
 装备词条 [示例](#742-装备词条)
 ## 5.3. 商品限购 ##
-![](./Images/商品限购.png)
+![](./Images/商品限购.png)  
 商品限购 [示例](#752-商店购买)
 
 # 6. TODO #
