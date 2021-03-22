@@ -36,10 +36,6 @@ namespace GameServer.Services
             MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<UserGameEnterRequest>(this.OnGameEnter);
             MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<UserGameLeaveRequest>(this.OnGameLeave);
         }
-        public void Init()
-        {
-
-        }
 
         void OnLogin(NetConnection<NetSession> sender, UserLoginRequest request)
 

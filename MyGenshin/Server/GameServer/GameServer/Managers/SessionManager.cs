@@ -8,13 +8,15 @@ using Network;
 
 namespace GameServer.Managers
 {
+
+    class  NoSessionException : Exception
+    {
+        public override string Message =>"找不到对应Session";
+    }
+
     class SessionManager : Singleton<SessionManager>
     {
         Dictionary<int, NetConnection<NetSession>> Sessions = new Dictionary<int, NetConnection<NetSession>>();
-        public void Init()
-        {
-
-        }
 
         public void AddSession(int characterId, NetConnection<NetSession> session)
         {

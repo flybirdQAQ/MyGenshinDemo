@@ -1,4 +1,5 @@
-﻿using System;
+﻿#undef UNITY_EDITOR
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class GameStart : MonoSingleton<GameStart>
     Coroutine coroutine;
     public UILoadingSliderView sliderView;
     public UITip uiTip;
+    public GameObject obj;
     protected override void OnStart()
     {
 
@@ -91,6 +93,7 @@ public class GameStart : MonoSingleton<GameStart>
                         sliderView.ShowSlider();
 #else
                         uiTip.gameObject.SetActive(true);
+                        Camera.main.gameObject.SetActive(true);
                         uiTip.Show(() =>
                         {
                             uiTip.Hide(() =>

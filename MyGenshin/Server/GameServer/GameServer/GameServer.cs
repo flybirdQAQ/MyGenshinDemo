@@ -32,9 +32,11 @@ namespace GameServer
             MessageService.Instance.Init();
             DataManager.Instance.Load();
             MapService.Instance.Init();
+            
             EntityManager.Instance.Init();
             CharacterManager.Instance.Init();
-        
+            TeamService.Instance.Init();
+
 
             thread = new Thread(new ThreadStart(this.Update));
 

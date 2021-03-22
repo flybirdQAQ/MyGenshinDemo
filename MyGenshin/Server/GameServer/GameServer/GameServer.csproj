@@ -127,7 +127,9 @@
     <Compile Include="Managers\QuestManager.cs" />
     <Compile Include="Managers\StatusManager.cs" />
     <Compile Include="Managers\StoreManager.cs" />
+    <Compile Include="Managers\TeamManager.cs" />
     <Compile Include="Models\Map.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Network\ExtensionMethods.cs" />
     <Compile Include="Interface\INetSession.cs" />
     <Compile Include="Network\NetConnection.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Services\MapService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\QuestService.cs" />
+    <Compile Include="Services\TeamService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\DBService.cs" />
     <Compile Include="Settings.cs" />

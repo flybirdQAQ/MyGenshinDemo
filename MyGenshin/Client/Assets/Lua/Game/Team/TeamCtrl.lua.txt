@@ -1,0 +1,62 @@
+require("Game.Team.TeamView")
+require("Game.Team.TeamGridView")
+require("Game.Team.TeamConst")
+TeamCtrl = {}
+
+
+
+function TeamCtrl:Init()
+
+    self:AddEvent()
+    self.Team=TeamView:New()
+    
+end
+
+
+function TeamCtrl:AddEvent()
+
+
+
+    self.OnTeamInvite = function(request)
+        local reply= function (res)
+            TeamService.Instance:SendTeamInviteResponse(res,request)
+        end
+        UICtrl:ShowConfirm('玩家'..request.FromName.."邀请你加入队伍",reply)
+
+    end
+    TeamService.Instance.OnTeamInvite:AddListener(self.OnTeamInvite)
+
+    self.OnTeamChange = function(old,new)
+        self.Team:Update(new)
+    end
+    TeamMgr.Instance.Team.OnValueChange:AddListener(self.OnTeamChange)
+end
+
+function TeamCtrl:ShowTeam()
+   
+    UIManager:Show(self.Team)
+
+end
+
+function TeamCtrl:GetInivteCallback(id)
+
+    local callback= function()      
+        local tid = id 
+        TeamService.Instance:SendTeamInviteRequest(tid)
+    end
+    return callback
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+return TeamCtrl

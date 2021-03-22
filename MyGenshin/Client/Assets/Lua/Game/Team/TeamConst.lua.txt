@@ -1,0 +1,8 @@
+TeamConst = {
+    Resource = {
+        "sprite/team/UI_MarkPlayer1.png",
+        "sprite/team/UI_MarkPlayer2.png",
+        "sprite/team/UI_MarkPlayer3.png",
+        "sprite/team/UI_MarkPlayer4.png"
+    }
+}

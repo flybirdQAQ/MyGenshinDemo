@@ -12,15 +12,8 @@ namespace GameServer.Services
 {
     class MessageService : Singleton<MessageService>, IDisposable
     {
-        public void Init()
-        {
 
-        }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
 
         public MessageService()
         {
@@ -32,7 +25,15 @@ namespace GameServer.Services
             MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<FriendRemoveRequest>(this.OnFriendRemove);
 
         }
-
+        public void Dispose()
+        {
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<MessageSendRequest>(this.OnMessageSend);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<MessageReplyRequest>(this.OnMessageReply);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<MessageListRequest>(this.OnMessageList);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<MessageTargetInfoRequest>(this.OnMessageTargetInfo);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<FriendListRequest>(this.OnFriendList);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Unsubscribe<FriendRemoveRequest>(this.OnFriendRemove);
+        }
         private void OnMessageList(NetConnection<NetSession> sender, MessageListRequest message)
         {
             sender.Session.Character.messageManager.SetDirty();

@@ -10,8 +10,7 @@ public class Httptest : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequest.Get("http://127.0.0.1:1234/hello");
         print("播放等待UI开始转圈圈 屏蔽用户操作");
-        yield return request.SendWebRequest();
-        
+        yield return request.SendWebRequest();    
         print("关闭等待UI");
         if (request.isNetworkError)
         {

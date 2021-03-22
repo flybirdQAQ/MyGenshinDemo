@@ -63,9 +63,9 @@ function ChrSelectCtrl:EnterGame()
     UserService.Instance:SendGameEnter(self.currnetChrIndex)
 end
 
-function ChrSelectCtrl:ShowModelAt(modelclass, transform)
-    assert(DataMgr.Instance.Characters:ContainsKey(modelclass))
-    local chrdefine =DataMgr.Instance.Characters[modelclass]
+function ChrSelectCtrl:ShowModelAt(class, transform)
+    assert(DataMgr.Instance.Characters:ContainsKey(class))
+    local chrdefine =DataMgr.Instance.Characters[class]
     local prefab = ResMgr.GetPrefab(chrdefine.Name,chrdefine.Resource)
     local gameObject = GameObject.Instantiate(prefab)
     gameObject.transform:SetParent(transform,false)

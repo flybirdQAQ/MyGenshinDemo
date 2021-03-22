@@ -55,10 +55,12 @@ EquipMgr = CS.Managers.EquipManager
 QuestMgr = CS.Managers.QuestManager
 MessageMgr=CS.Managers.MessageManager
 FriendMgr=CS.Managers.FriendManager
+TeamMgr=CS.Managers.TeamManager
 --Service
 UserService = CS.Services.UserService
 ItemService = CS.Services.ItemService
 StatusService = CS.Services.StatusService
 QuestService = CS.Services.QuestService
+TeamService = CS.Services.TeamService
 --DoTween
 Ease = CS.DG.Tweening.Ease

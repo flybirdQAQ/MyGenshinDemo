@@ -12,13 +12,22 @@ function FriendGridView:Construtor(parent,transform)
 end
 
 function FriendGridView:AddEvent()
+
+ 
+
     local OnClick=function (btn)
-        if(btn==self.Button_Detial)then
+        if(btn==self.Button_Avatar)then
             FriendCtrl:ShowInfo(self.info.friendInfo,"Friend")
+        elseif(btn==self.Button_Selects)then
+            local callback= TeamCtrl:GetInivteCallback(self.info.friendInfo.Id)
+            UICtrl:ShowSelect(self.transform.position)
+            UICtrl:AddButton("邀请组队",callback)     
         end
+        
     end
 
-    self:AddClickEvent(self.Button_Detial,OnClick)
+    self:AddClickEvent(self.Button_Avatar,OnClick)
+    self:AddClickEvent(self.Button_Selects,OnClick)
 end
 
 

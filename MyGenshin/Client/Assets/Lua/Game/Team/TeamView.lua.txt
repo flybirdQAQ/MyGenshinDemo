@@ -1,0 +1,45 @@
+TeamView= BaseClass(UINode)
+TeamView.Singleton =true
+
+function TeamView:Construtor()
+    self.viewCfg.prefabName = "UITeam"
+    self.viewCfg.prefabPath = "ui/team/UITeam.prefab"
+    self.viewCfg.canvasName = "Normal"
+    self.viewCfg.isEnterUIState = false
+    self.viewCfg.component = {
+        {UI.Fade, {alpha = 1, durtion = 0.5, delay = 0}},
+        {UI.Move, {distance = 10, durtion = 0.3, dalay = 0, direction = Vector3.Left}}
+    }
+
+    self.chars={}
+end
+
+
+function TeamView:Clear()
+    for i,v in pairs(self.chars) do 
+
+        UIManager:Close(v)
+    end
+
+    self.chars={}
+end
+
+
+function TeamView:Update(team)
+    self:Clear()
+    if team==nil then  return end
+    for i,v in pairs(team.Members) do 
+
+        local warp =WarpView:New(self,self.Transform_Content)
+        UIManager:Show(warp)
+        table.insert(self.chars,warp)
+        local grid = TeamGridView:New(warp)
+        UIManager:Show(grid)
+        grid:SetData(i,v,team.Leader)
+    end
+end
+
+
+
+
+

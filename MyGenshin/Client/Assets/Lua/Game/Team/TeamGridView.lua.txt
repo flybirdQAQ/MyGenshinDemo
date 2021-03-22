@@ -1,0 +1,21 @@
+TeamGridView = BaseClass(UINode)
+
+function TeamGridView:Construtor(parent)
+    self.viewCfg.prefabName = "UITeamGrid"
+    self.viewCfg.prefabPath = "ui/team/UITeamGrid.prefab"
+    self.viewCfg.parent = parent
+    self.viewCfg.isAutoDestroy = true
+    self.viewCfg.isDestroyOnClose = true
+    self.viewCfg.component = {
+        {UI.Fade, {alpha = 1, durtion = 0.5, delay = 0}},
+        {UI.Move, {distance = 10, durtion = 0.3, dalay = 0.1, direction = Vector3.Left}}
+    }
+end
+
+
+
+
+function TeamGridView:SetData(i,charInfo,leader)
+    self.Image_P.sprite=ResMgr.GetSprite(i,TeamConst.Resource[i+1])
+    self.TextMeshProUGUI_Name.text=charInfo.Name
+end

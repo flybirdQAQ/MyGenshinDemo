@@ -3,6 +3,7 @@ local ctrl=
 'Game.ChrSelect.ChrSelectCtrl',
 'Game.LoadScene.LoadSceneCtrl',
 'Game.Main.MainCtrl',
+'Game.Common.UICtrl',
 'Game.Main.MainTalkCtrl',
 'Game.Bag.BagCtrl',
 'Game.Store.StoreCtrl',
@@ -10,7 +11,9 @@ local ctrl=
 'Game.Quest.QuestCtrl',
 'Game.Friends.FriendCtrl',
 'Game.Mail.MailCtrl',
-'Game.WorldElement.WorldElementCtrl'
+'Game.WorldElement.WorldElementCtrl',
+'Game.Team.TeamCtrl',
+
 }
 return ctrl
 

@@ -1,0 +1,36 @@
+
+
+SelectView = BaseClass(UINode)
+SelectView.Singleton = true
+
+function SelectView:Construtor()
+    self.viewCfg.prefabName = "UISelect"
+    self.viewCfg.prefabPath = "ui/common/UISelect.prefab"
+    self.viewCfg.canvasName = "Normal"
+    self.viewCfg.component = {
+        {UI.Fade, {alpha = 1, durtion = 0.5, delay = 0}},
+        {UI.Mask, {isCloseOnClick = true,color=Color(0,0,0,0)}}
+    }
+    self.button={}
+end
+
+
+
+function SelectView:Clear()
+    for k,v in pairs(self.button) do 
+        v:Close()
+    end
+    self.button={}
+end
+
+
+function SelectView:AddButton(text,callback)
+    local button = ButtonGridView:New(self,self.Transform_Content)
+    table.insert(self.button,button)
+    UIManager:Show(button)
+    button:SetData(text,callback)
+end
+
+function SelectView:SetPosition(position)
+    self.Transform_Content.position=position
+end

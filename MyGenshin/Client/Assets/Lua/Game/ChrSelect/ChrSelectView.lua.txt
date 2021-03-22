@@ -117,6 +117,7 @@ function ChrSelectView:UpdateButtons(positionIndex, chrIndex)
             self.chrsObj[chrIndex]:SetActive(true)
         else
             self.chrsObj[chrIndex] =ChrSelectCtrl:ShowModelAt(self.chars[chrIndex].Class,ChrSelectCtrl.pointsTrans['SelectPoint'..tostring(positionIndex)])
+            -- WorldElementCtrl:AddPlayerInfo( self.chars[chrIndex] ,self.chrsObj[chrIndex] .transform)
         end
     else
         self.Button_Selects[positionIndex].gameObject:SetActive(false)

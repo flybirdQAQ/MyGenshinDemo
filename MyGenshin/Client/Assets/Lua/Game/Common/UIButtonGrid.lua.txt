@@ -1,0 +1,29 @@
+ButtonGridView = BaseClass(UINode)
+
+function ButtonGridView:Construtor(parent,transform)
+    self.viewCfg.prefabName = "ButtonGrid"
+    self.viewCfg.prefabPath = "ui/common/UIButtonGrid.prefab"
+    self.viewCfg.parent=parent
+    self.viewCfg.parentTransform=transform
+    self.viewCfg.isDestroyOnClose=true
+end
+
+
+
+function ButtonGridView:AddEvent()
+
+    local OnClick=function(btn)
+        if btn==self.Button_Confirm  and self.callback~=nil   then
+            self.callback()
+        end
+    end
+
+    self:AddClickEvent(self.Button_Confirm,OnClick)
+end
+
+
+function ButtonGridView:SetData(text,callback)
+    self.Text_Main.text=text
+    self.callback=callback
+end
+

@@ -1,0 +1,38 @@
+PlayerInfoView = BaseClass(WorldElement)
+
+function PlayerInfoView:Construtor(transform)
+    self.viewCfg = {
+        prefabPath = "ui/worldElement/PlayerInfo.prefab",
+        prefabName = "PlayerInfo",
+        parentTransform = transform
+    }
+end
+
+function PlayerInfoView:AddEvent()
+    self.Canvas_Main.worldCamera = Camera.main
+    self.Update=function()
+
+    self.Canvas_Main.transform.forward=Camera.main.transform.forward
+    end
+    GlobleEventManager:AddListener(
+        GlobleEvent.Update,
+        self.Update
+    )
+end
+
+function PlayerInfoView:OnDestroy()
+    GlobleEventManager:RemoveListener(
+        GlobleEvent.Update,
+        self.Update
+    )
+end
+
+
+function PlayerInfoView:SetData(charinfo)
+    self.play = charinfo
+    self.Text_Name.text ='Lv.'.. charinfo.Level.. " ".. charinfo.Name
+end
+
+function PlayerInfoView:Update()
+    self.Canvas_Main.transform.forward=Camera.main.transform.forward
+end

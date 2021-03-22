@@ -11,10 +11,6 @@ namespace GameServer.Services
     class QuestService:Singleton<QuestService>,IDisposable
     {
 
-        public void Init()
-        {
-
-        }
         public QuestService()
         {
 

@@ -30,6 +30,12 @@ namespace Network
             if (message.friendList!= null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.friendList); }
             if (message.friendRemove != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.friendRemove); }
             if (message.messageReceive != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.messageReceive); }
+            if (message.teamInviteRequest!=null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInviteRequest); }
+            if (message.teamInviteResponse != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInviteResponse); }
+            if (message.teamInfo != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInfo); }
+            if (message.teamLeader != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamLeader); }
+            if (message.teamLeave!= null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamLeave); }
+            if (message.Update!=null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.Update); }
         }
 
         public void Dispatch(T sender, SkillBridge.Message.NetMessageRequest message)
@@ -54,6 +60,11 @@ namespace Network
             if (message.messageTargetInfoRequest != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.messageTargetInfoRequest); }
             if (message.friendList != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.friendList); }
             if (message.friendRemove != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.friendRemove); }
+            if (message.teamInviteRequest != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInviteRequest); }
+            if (message.teamInviteResponse != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInviteResponse); }
+            if (message.teamInfo != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamInfo); }
+            if (message.teamLeader != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamLeader); }
+            if (message.teamLeave != null) { MessageDistributer<T>.Instance.RaiseEvent(sender, message.teamLeave); }
         }
     }
 }

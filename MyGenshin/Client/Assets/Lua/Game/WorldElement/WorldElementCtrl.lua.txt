@@ -2,13 +2,13 @@ WorldElementCtrl={}
 
 require('Game.WorldElement.WorldElement')
 require('Game.WorldElement.NpcInfoView')
+require("Game.WorldElement.PlayInfoView")
 
 function WorldElementCtrl:Init()
     self.AllWorldElement={}
 end
 
 function AddChrInfo(npcctrl)
-    print(npcctrl)
     WorldElementCtrl:AddChrInfo(npcctrl)
 end
 
@@ -19,6 +19,13 @@ function WorldElementCtrl:AddChrInfo(npcctrl)
     chrInfo:SetData(npcctrl)
 end
 
+
+
+function WorldElementCtrl:AddPlayerInfo(info,transform)
+    local chrInfo= PlayerInfoView:New(transform)
+    chrInfo:Show()
+    chrInfo:SetData(info)
+end
 
 
 

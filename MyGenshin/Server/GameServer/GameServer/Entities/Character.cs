@@ -1,6 +1,7 @@
 ﻿using Common.Data;
 using GameServer.Core;
 using GameServer.Managers;
+using GameServer.Models;
 using Interface;
 using SkillBridge.Message;
 using System;
@@ -11,19 +12,22 @@ using System.Threading.Tasks;
 
 namespace GameServer.Entities
 {
-    class Character : CharacterBase,IPostProcess
+    class Character : CharacterBase, IPostProcess
     {
         public TCharacter Data;
 
-        public ItemManager itemManager ;
+        public ItemManager itemManager;
         public StatusManager statusManager;
         public GoodsLimitManager goodsLimitManager;
         public EquipManager equipManager;
         public QuestManager questManager;
         public MessageManager messageManager;
         public FriendManager friendManager;
-        public Character(CharacterType type,TCharacter cha):
-            base(new Core.Vector3Int(cha.MapPosX, cha.MapPosY, cha.MapPosZ),new Core.Vector3Int(cha.MapDirection,0,0))
+
+        public Team team;
+        public int teamTimeStamp;
+        public Character(CharacterType type, TCharacter cha) :
+            base(new Core.Vector3Int(cha.MapPosX, cha.MapPosY, cha.MapPosZ), new Core.Vector3Int(cha.MapDirection, 0, 0))
         {
 
             this.Data = cha;
@@ -34,7 +38,7 @@ namespace GameServer.Entities
             this.Info.EntityId = this.entityId;
             this.Info.ConfigId = cha.TID;
             this.Info.Name = cha.Name;
-            this.Info.Level = cha.Level;     
+            this.Info.Level = cha.Level;
             this.Info.Class = cha.Class;
             this.Info.mapId = cha.MapID;
             this.Info.Entity = this.EntityData;
@@ -61,9 +65,10 @@ namespace GameServer.Entities
         public long Gold
         {
             get { return Data.Gold; }
-            set { 
+            set
+            {
                 if (this.Data.Gold == value) return;
-                this.statusManager.AddGoldChange((int)(value-Data.Gold ));
+                this.statusManager.AddGoldChange((int)(value - Data.Gold));
                 Data.Gold = value;
             }
         }
@@ -73,13 +78,23 @@ namespace GameServer.Entities
             this.statusManager.PostProcess(message);
             this.messageManager.PostProcess(message);
             this.friendManager.PostProcess(message);
+
+            if (team != null && teamTimeStamp < team.TimeStamp)
+            {
+                message.Response.teamInfo = new TeamInfoResponse()
+                {
+                    Team = team.GetInfo(),
+                    Result = Result.Success
+                };
+            }
         }
+
+
 
 
         public void Clear()
         {
             this.friendManager.OfflineNoisy();
-            //this.friendManager.UpdateInfo();
 
         }
     }

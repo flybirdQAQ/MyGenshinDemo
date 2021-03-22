@@ -1,0 +1,33 @@
+require('Game.Common.UIButtonGrid')
+require('Game.Common.UISelect')
+require("Game.Common.UIConfirm")
+
+UICtrl={}
+function UICtrl:Init()
+    self.UISelect=SelectView:New()
+    self.Confirm=UIConfirmView:New()
+end
+
+
+function UICtrl:ShowSelect()
+    self.UISelect:Clear()
+    UIManager:Show(self.UISelect)
+    self.UISelect:SetPosition(Helper. GetMousePosition())
+end
+
+
+function UICtrl:AddButton(text,callback)
+    if self.UISelect==nil then
+        self.UISelect=SelectView:New()
+    end
+    self.UISelect:AddButton(text,callback)
+end
+
+
+function UICtrl:ShowConfirm(text,callback)
+    UIManager:Show(self.Confirm)
+    self.Confirm:SetData(text,callback)
+end
+
+
+return UICtrl

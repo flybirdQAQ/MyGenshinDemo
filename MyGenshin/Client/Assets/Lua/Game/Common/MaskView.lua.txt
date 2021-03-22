@@ -14,8 +14,8 @@ end
 
 
 function MaskView:SetColor(color)
-    local image =self.gameObject:GetComponent('Image')
-    image.Color=color
+    local image =self.Button_Mask.gameObject:GetComponent('Image')
+    image.color=color
 end
 
 function MaskView:AddEvent()

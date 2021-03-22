@@ -41,5 +41,10 @@ namespace Common
                 return Equals(instance, default(T)) ? (instance = new T()) : instance;
             }
         }
+
+        public virtual void Init()
+        {
+
+        }
     }
 }

@@ -45,5 +45,10 @@ public static class Helper
         return (int)t;
 
     }
+
+    public static Vector3 GetMousePosition()
+    {
+        return Input.mousePosition;
+    }
 }
 
