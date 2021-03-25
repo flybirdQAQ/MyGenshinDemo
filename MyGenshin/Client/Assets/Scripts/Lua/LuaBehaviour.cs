@@ -1,4 +1,5 @@
-﻿using Boo.Lang;
+﻿#undef UNITY_EDITOR
+using Boo.Lang;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,27 +27,21 @@ public class LuaBehaviour : MonoSingleton<LuaBehaviour>
 
     byte[] customLoader(ref string fileName)
     {
-        fileName = main + fileName.Replace('.', '/') + ".lua.txt";
+        fileName = "lua/" + fileName.Replace('.', '/') + ".lua.txt";
+#if UNITY_EDITOR
+        fileName = SysDefine.PATH_ASSETBUNDLE_LOCAL + "/" + fileName;
         if (File.Exists(fileName))
         {
-
             return File.ReadAllBytes(fileName.ToLower());
         }
-        else
-        {
-            return null;
-        }
+#endif  
+        return ResMgr.GetLua(fileName).bytes;       
     }
 
-    void ScriptPathInit()
-    {
-        main = Application.dataPath + "/" + "Lua/";
-        //Debug.Log($"LuaMain:{main}");
-    }
+
 
     public void LuaEnvInit()
     {
-        ScriptPathInit();
         luaEnv = new LuaEnv();
         luaEnv.AddLoader(customLoader);
         scriptEnv = luaEnv.NewTable();
@@ -55,7 +50,7 @@ public class LuaBehaviour : MonoSingleton<LuaBehaviour>
         scriptEnv.SetMetaTable(meta);
         meta.Dispose();
         scriptEnv.Set("self", this);
-        LoadScript("Main");
+        LoadScript("Main.Main");
         scriptEnv.Get("Start", out luaStart);
         scriptEnv.Get("Update", out luaUpdate);
         scriptEnv.Get("Ondestroy", out luaOnDestroy);
@@ -67,6 +62,7 @@ public class LuaBehaviour : MonoSingleton<LuaBehaviour>
     {
         return scriptEnv.GetInPath<T>(str);
     }
+
 
     public void CallLuaEvent(string eventType)
     {

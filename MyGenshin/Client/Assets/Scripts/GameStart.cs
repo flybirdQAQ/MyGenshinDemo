@@ -50,6 +50,7 @@ public class GameStart : MonoSingleton<GameStart>
         Debug.Log("GameStart");
         this.gameObject.AddComponent<LuaBehaviour>();
         this.gameObject.AddComponent<NetClient>();
+        this.gameObject.AddComponent<HotFixManager>();
         UserService.Instance.Init();
         ItemService.Instance.Init();
         MapService.Instance.Init();
@@ -103,10 +104,15 @@ public class GameStart : MonoSingleton<GameStart>
                                 sliderView.ShowSlider();
                             });
                             sliderView.gameObject.SetActive(true);
+
                         });
 #endif
+                        sliderView.OnSliderShowed += () =>
+                        {
 
-                        JumpToState(State.CheckExtractResource);
+                            JumpToState(State.CheckExtractResource);
+                        };
+
                     }
                     break;
                 }
@@ -117,12 +123,12 @@ public class GameStart : MonoSingleton<GameStart>
                     {
                         currentSubState = SubState.Update;
 
-                        sliderView.Reset("解压文件中", () =>
-                        {
-                            StopCoroutine(coroutine);
-                            JumpToState(State.UpdateResourceFromNet);
-                        });
-                        coroutine = StartCoroutine(Extract(sliderView.SetData));
+                        sliderView.Reset("检查文件中", SliderMode.Fraction, () =>
+                         {
+                             StopCoroutine(coroutine);
+                             JumpToState(State.UpdateResourceFromNet);
+                         });
+                        coroutine = StartCoroutine(gameObject.GetComponent<HotFixManager>().Check(sliderView.SetData));
                     }
                     break;
                 }
@@ -131,12 +137,13 @@ public class GameStart : MonoSingleton<GameStart>
                     if (currentSubState == SubState.Enter)
                     {
                         currentSubState = SubState.Update;
-                        sliderView.Reset("下载文件中", () =>
-                        {
-                            StopCoroutine(coroutine);
-                            JumpToState(State.InitAssetBundle);
-                        });
-                        coroutine = StartCoroutine(Download(sliderView.SetData));
+                        sliderView.Reset("下载文件中", SliderMode.Download, () =>
+                         {
+                             StopCoroutine(coroutine);
+                             GetComponent<HotFixManager>().UpdateAssetInfo();
+                             JumpToState(State.InitAssetBundle);
+                         });
+                        coroutine = StartCoroutine(gameObject.GetComponent<HotFixManager>().Download(sliderView.AddData));
                     }
                     break;
                 }
@@ -145,12 +152,12 @@ public class GameStart : MonoSingleton<GameStart>
                     if (currentSubState == SubState.Enter)
                     {
                         currentSubState = SubState.Update;
-                        sliderView.Reset("初始化中", () =>
-                        {
-                            StopCoroutine(coroutine);
-                            JumpToState(State.StartLogin);
-                        });
-                        coroutine = StartCoroutine(GameInit(sliderView.SetData));
+                        sliderView.Reset("初始化中", SliderMode.Percent, () =>
+                         {
+                             StopCoroutine(coroutine);
+                             JumpToState(State.StartLogin);
+                         });
+                        coroutine = StartCoroutine(GameInit(sliderView.AddData));
                     }
                     break;
                 }
@@ -194,42 +201,19 @@ public class GameStart : MonoSingleton<GameStart>
         Debug.Log("编辑状态游戏退出");
 #else
         Application.Quit();
-        Debug.Log ("游戏退出");
+        Debug.Log("游戏退出");
 #endif
     }
 
-    //TODO:替换为真正的操作   
-    IEnumerator Extract(Action<float, string> setData)
-    {
-        yield return new WaitForSeconds(0.1f);
-        setData(0.25f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(0.5f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(0.75f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(1, "解压完成");
-    }
 
-    IEnumerator Download(Action<float, string> setData)
-    {
-        yield return new WaitForSeconds(0.1f);
-        setData(0.25f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(0.5f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(0.75f, null);
-        yield return new WaitForSeconds(0.1f);
-        setData(1, "下载完成");
-    }
-    IEnumerator GameInit(Action<float, string> setData)
+
+    IEnumerator GameInit(Action<string, long, long> addData)
     {
         this.gameObject.AddComponent<SceneManager>();
         this.gameObject.AddComponent<GameObjectManager>();
         this.gameObject.AddComponent<EntityManager>();
         DontDestroyOnLoad(GameObject.Find("EventSystem"));
-        setData(0.1f, "");
-        yield return DataManager.Instance.LoadData(setData);
+        yield return DataManager.Instance.LoadData(addData);
     }
 
 

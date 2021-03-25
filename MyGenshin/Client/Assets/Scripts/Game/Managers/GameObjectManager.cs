@@ -58,7 +58,7 @@ namespace Managers
         {
             if (!GameObects.ContainsKey(character.entityId) || GameObects[character.entityId] == null)
             {
-                UnityEngine.Object obj = ResMgr.GetPrefab(character.Define.Name, character.Define.Resource);
+                UnityEngine.Object obj = ResMgr.GetPrefab( character.Define.Resource);
 
                 if (obj == null)
                 {
@@ -97,7 +97,7 @@ namespace Managers
                 User.Instance.CurrentCharacterObject = go;
                 pc.ec = ec;
                 pc.character = character;
-                GameObject playModule = ResMgr.GetPrefab("playModule", "module/common/PlayModule.prefab");
+                GameObject playModule = ResMgr.GetPrefab( "module/common/PlayModule.prefab");
                 playModule = Instantiate(playModule);
                 DontDestroyOnLoad(playModule);
                 Transform player = go.transform;

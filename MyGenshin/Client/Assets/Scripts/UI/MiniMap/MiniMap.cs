@@ -23,7 +23,7 @@ public class MiniMap : MonoBehaviour
     {
         
         mapDefine = define;
-        Sprite sp = ResMgr.GetSprite(System.IO.Path.GetFileNameWithoutExtension(define.MiniMap), define.MiniMap);
+        Sprite sp = ResMgr.GetSprite( define.MiniMap);
         Map.overrideSprite = sp;
         Map.SetNativeSize();
 

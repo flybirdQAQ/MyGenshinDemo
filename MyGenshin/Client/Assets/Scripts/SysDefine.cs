@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using UnityEngine;
 
 public class SysDefine
 {
+
+
+    //目录
     public const string PATH_ASSETBUNDLE = "AssetBundles";
     public const string PATH_ASSETBUNDLE_LOCAL = "Assets/AssetBundlesLocal";
     public const string PATH_ROOT_DEFINE = "DATA/";
@@ -24,5 +27,36 @@ public class SysDefine
     public const string PATH_DEFINE_SPECIAL= PATH_ROOT_DEFINE + "SpecialDefine.txt";
     public const string PATH_DEFINE_QUEST = PATH_ROOT_DEFINE + "QuestDefine.txt";
     public const string PATH_DEFINE_CHAPTER = PATH_ROOT_DEFINE + "ChapterDefine.txt";
+
+    public static string GetStreamingAssetsTargetPathByPlatform(RuntimePlatform platform)
+    {
+        string dataPath = Application.dataPath.Replace("/Assets", "");
+        if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer || platform == RuntimePlatform.WebGLPlayer)
+            return dataPath + "/StreamingAssets";
+        else if (platform == RuntimePlatform.Android)
+            return dataPath + "/StreamingAssetsAndroid";
+        else if (platform == RuntimePlatform.IPhonePlayer || platform == RuntimePlatform.OSXEditor || platform == RuntimePlatform.OSXPlayer)
+            return dataPath + "/StreamingAssetsIOS";
+        else
+            Debug.Log("Unspport System!");
+
+        return string.Empty;
+
+    }
+    public static string GetAssetsTargetPathByPlatform(RuntimePlatform platform)
+    {
+        string dataPath = Application.dataPath.Replace("/Assets", "");
+        if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer || platform == RuntimePlatform.WebGLPlayer)
+            return dataPath + "/" + SysDefine.PATH_ASSETBUNDLE;
+        else if (platform == RuntimePlatform.Android)
+            return dataPath + "/Android/" + SysDefine.PATH_ASSETBUNDLE;
+        else if (platform == RuntimePlatform.IPhonePlayer || platform == RuntimePlatform.OSXEditor || platform == RuntimePlatform.OSXPlayer)
+            return dataPath + "/IOS/" + SysDefine.PATH_ASSETBUNDLE;
+        else
+            Debug.Log("Unspport System!");
+
+        return string.Empty;
+
+    }
 }
 

@@ -13,26 +13,18 @@ namespace Services
 {
     class FriendService : Singleton<FriendService>, IDisposable
     {
-
         public FriendService()
         {
-            //MessageDistributer.Instance.Subscribe<FriendAddRequest>(this.OnFriendAddRequest);
             MessageDistributer.Instance.Subscribe<FriendAddResponse>(this.OnFriendAddResponse);
             MessageDistributer.Instance.Subscribe<FriendRemoveResponse>(this.OnFriendRemove);
             MessageDistributer.Instance.Subscribe<FriendListResponse>(this.OnFriendList);
-
         }
-
-
         public void Dispose()
         {
-            //MessageDistributer.Instance.Unsubscribe<FriendAddRequest>(this.OnFriendAddRequest);
             MessageDistributer.Instance.Unsubscribe<FriendAddResponse>(this.OnFriendAddResponse);
             MessageDistributer.Instance.Unsubscribe<FriendRemoveResponse>(this.OnFriendRemove);
             MessageDistributer.Instance.Unsubscribe<FriendListResponse>(this.OnFriendList);
         }
-
-
         public void SendFriendAddRequest(int friendID)
         {
             NetMessage message = new NetMessage()

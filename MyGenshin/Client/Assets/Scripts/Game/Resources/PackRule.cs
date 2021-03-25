@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PackRule
 {
-    static List<string> Prefixs = new List<string>() { "ui","sprite","module","model"};
+    static List<string> Prefixs = new List<string>() { "ui","sprite","module","model","lua"};
     public static string PathToAssetBundleName(string path)
     {
         path = path.Replace('\\', '/');

@@ -81,25 +81,22 @@ namespace Managers
         }
 
 
-        public IEnumerator LoadData(Action<float, string> setData)
+        public IEnumerator LoadData(Action< string ,long,long> addData)
 
         {
-
-
+            int total = 13;
 
             string json = File.ReadAllText(SysDefine.PATH_DEFINE_MAP);
             this.Maps = JsonConvert.DeserializeObject<Dictionary<int, MapDefine>>(json);
-            setData(0.2f, "");
+            addData(null, 1, total);
             yield return null;
-
             json = File.ReadAllText(SysDefine.PATH_DEFINE_CHARACTER);
             this.Characters = JsonConvert.DeserializeObject<Dictionary<int, CharacterDefine>>(json);
-            setData(0.4f, "");
+            addData(null, 1, total);
             yield return null;
-
             json = File.ReadAllText(SysDefine.PATH_DEFINE_TELEPORTER);
             this.Teleporters = JsonConvert.DeserializeObject<Dictionary<int, TeleporterDefine>>(json);
-            setData(0.6f, "");
+            addData(null, 1, total);
             yield return null;
 
             //json = File.ReadAllText(SysDefine.PATH_DEFINE_SPAWNPOINT);
@@ -108,35 +105,44 @@ namespace Managers
 
             json = File.ReadAllText(SysDefine.PATH_DEFINE_NPC);
             this.NPCs = JsonConvert.DeserializeObject<Dictionary<int, NPCDefine>>(json);
-            setData(0.8f, "");
-
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_TALK);
             Talks = JsonConvert.DeserializeObject<Dictionary<int, TalkDefine>>(json);
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_STORE);
             Stores = JsonConvert.DeserializeObject<Dictionary<int, StoreDefine>>(json);
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_GOODS);
             Goods = JsonConvert.DeserializeObject<Dictionary<int, GoodsDefine>>(json);
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_ITEM);
             this.Items = JsonConvert.DeserializeObject<Dictionary<int, ItemDefine>>(json);
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_EQUIP);
             this.Equips = JsonConvert.DeserializeObject<Dictionary<int, EquipDefine>>(json);
+            addData(null, 1, total);
             yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_PROPERTY);
             this.Properties = JsonConvert.DeserializeObject<Dictionary<int, PropertyDefine>>(json);
+            addData(null, 1, total);
+            yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_SPECIAL);
             Specials = JsonConvert.DeserializeObject<Dictionary<int, SpecialDefine>>(json);
-
+            addData(null, 1, total);
+            yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_QUEST);
             Quests = JsonConvert.DeserializeObject<Dictionary<int, QuestDefine>>(json);
-
+            addData(null, 1, total);
+            yield return null;
             json = File.ReadAllText(SysDefine.PATH_DEFINE_CHAPTER);
             Chapters = JsonConvert.DeserializeObject<Dictionary<int, ChapterDefine>>(json);
-            setData(1f, "读取文件完成");
+            addData("文件读取完成", 1, total);
+            yield return new WaitForSeconds(0.5f);
 
         }
 
