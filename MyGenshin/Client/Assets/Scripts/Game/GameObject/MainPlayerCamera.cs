@@ -146,9 +146,9 @@ public class MainPlayerCamera : MonoSingleton<MainPlayerCamera>
         if (!InnerEnable) return;
         center = cc.center * 2 + player.position;
         d = (transform.position - center).magnitude;
-        x = Input.GetAxis("Mouse X");
-        y = Input.GetAxis("Mouse Y");
-        z = Input.GetAxis("Mouse ScrollWheel");
+        x = InputManager.Instance.GetAxis("Mouse X");
+        y = InputManager.Instance.GetAxis("Mouse Y");
+        z = InputManager.Instance.GetAxis("Mouse ScrollWheel");
 
     }
 

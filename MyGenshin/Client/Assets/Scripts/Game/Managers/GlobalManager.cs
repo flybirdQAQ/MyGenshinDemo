@@ -12,6 +12,7 @@ namespace Managers
         Talking = 1,
         UI = 2,
 
+
     }
     public class GlobalManager : Singleton<GlobalManager>
     {

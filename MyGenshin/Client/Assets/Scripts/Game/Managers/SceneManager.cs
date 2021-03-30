@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class SceneManager : MonoSingleton<SceneManager>
 {
     public UnityAction<float> OnProgress = null;
-    public UnityAction OnLoad;
 
     // Use this for initialization
 
@@ -17,7 +16,8 @@ public class SceneManager : MonoSingleton<SceneManager>
 
     public void LoadScene(string name)
     {
-        OnLoad?.Invoke();
+
+        LuaBehaviour.Instance.CallLuaEvent("LoadScene");
         StartCoroutine(LoadLevel(name));
     }
 
@@ -36,9 +36,15 @@ public class SceneManager : MonoSingleton<SceneManager>
 
     private void LevelLoadCompleted(AsyncOperation obj)
     {
+        Invoke("EventInvoke",1.0f);     
+        Debug.Log("LevelLoadCompleted:" + obj.progress);
+    }
+    public void EventInvoke()
+    {
         if (OnProgress != null)
             OnProgress(1f);
-        Debug.Log("LevelLoadCompleted:" + obj.progress);
+
+
     }
 
 

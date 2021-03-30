@@ -31,6 +31,9 @@ namespace Entities
     }
     class Equip : ISelectable
     {
+
+
+        public EventWraperV2<Equip, Equip> OnValueChange = new EventWraperV2<Equip, Equip>();
         public EquipDefine Define;
         public NEquipInfo Info;
 
@@ -63,6 +66,13 @@ namespace Entities
             }
 
         }
+
+
+        public void Remove()
+        {
+            OnValueChange.Invoke(this, null);
+        }
+
         public List<Property> GetBasicProperties()
         {
             int start = 0;

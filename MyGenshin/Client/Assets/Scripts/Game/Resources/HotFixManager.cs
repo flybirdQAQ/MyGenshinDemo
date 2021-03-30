@@ -32,6 +32,8 @@ public class HotFixManager : MonoBehaviour
         if (req.isNetworkError)
         {
             setData("更新资源列表失败", 0, 1);
+            GameStart.QuitGame();
+                         
         }
         if (!Directory.Exists(Application.persistentDataPath))
         {

@@ -47,6 +47,16 @@ function BagCtrl:GetGroup()
     end
 end
 
+
+function BagCtrl:RemoveGrid(item)
+
+    if self.bag~=nil then
+        self.bag:RemoveGrid(item)
+    end
+
+end
+
+
 function BagCtrl:SetMode(state)
     self:GetGroup().State.Value=state
 end

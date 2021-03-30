@@ -21,9 +21,10 @@ namespace GameServer.Managers
         public EquipManager(Character owner)
         {
             Owner = owner;
-            foreach (var item in Owner.Data.CharacterEquips)
+            foreach (var item in Owner.Data.CharacterEquips.Where(x=>x.IsDelete==false))
             {
-                Equip equip = new Equip(item);
+           
+               Equip equip = new Equip(item);
                 equip.Id = ++EquipID;
                 Equips.Add(equip.Id,equip );
             }
@@ -114,7 +115,7 @@ namespace GameServer.Managers
         public bool RemoveEquip(int equipId)
         {
             Equip equip = null;
-            if (Equips.TryGetValue(equipId, out equip))
+            if (GetEquip(equipId, out equip))
             {
                 return RemoveEquip(equip);
             }
@@ -122,12 +123,15 @@ namespace GameServer.Managers
         }
         public bool RemoveEquip(Equip equip)
         {
-            Equips.Remove(equip.Id);
+
             if (equip.TEquip.Character == Owner.Data)
             {
+                Equips.Remove(equip.Id);
                 equip.TEquip.IsDelete = true;
+                Owner.statusManager.AddEquipChange(StatusAction.Delete, equip.Id, equip.Define.ID, equip.Property);
+                return true;
             }
-            return true;
+            return false;
         }
 
 
@@ -139,6 +143,11 @@ namespace GameServer.Managers
                return WearEquip(equip);
             }
             return Result.Failed;       
+        }
+
+        public bool GetEquip(int id ,out Equip equip)
+        {
+            return Equips.TryGetValue(id,out equip);
         }
 
         public bool HasEquip(int id)

@@ -44,3 +44,9 @@ function WorldElement:SetUnityUIComponent(transform)
     local t = Split(key, "_")
     self[key] = transform:GetComponent(t[1])
 end
+
+
+function WorldElement:Close()
+    UnityDestroy(self.gameObject)
+    self:Destroy()
+end

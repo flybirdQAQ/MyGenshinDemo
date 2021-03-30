@@ -51,11 +51,10 @@ namespace GameServer.Managers
         }
         public Result SellEquip(NetConnection<NetSession> sender, NEquipInfo equipInfo)
         {
-            EquipDefine itemDefine;
-            if (!DataManager.Instance.Equips.TryGetValue(equipInfo.Id, out itemDefine)) return Result.Failed;
-            if (!sender.Session.Character.equipManager.HasEquip(equipInfo.Id)) return Result.Failed;
-            sender.Session.Character.equipManager.RemoveEquip(equipInfo.Id);
-            ApplyCurrency(sender.Session.Character, itemDefine);
+            Equip equip;
+            if (!sender.Session.Character.equipManager.GetEquip(equipInfo.Id,out equip)) return Result.Failed;
+            if (!sender.Session.Character.equipManager.RemoveEquip(equipInfo.Id)) return Result.Failed;
+            ApplyCurrency(sender.Session.Character, equip.Define);
             return Result.Success;
         }
 

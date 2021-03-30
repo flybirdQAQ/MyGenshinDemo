@@ -7,6 +7,14 @@ function UIDetialView:Construtor(parent)
     -- self.viewCfg.isDestroyOnClose=true
 end
 
+function UIDetialView:AddEvent()
+    self.Update=function()
+        LayoutRebuilder.ForceRebuildLayoutImmediate(self.Transform_Description)
+    end
+    self.eventMgr:AddListener(UINode.event.OnShowed,self.Update)
+
+end
+
 
 function UIDetialView:SetParent(parent)
     self.viewCfg.parent=parent
@@ -109,5 +117,5 @@ function UIDetialView:SetInfo(itemDefine,equip,equipDefine)
         end
     end
 
-    LayoutRebuilder.ForceRebuildLayoutImmediate(self.Transform_Description)
+    self.Update()
 end

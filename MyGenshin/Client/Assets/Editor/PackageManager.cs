@@ -118,7 +118,7 @@ public static class PackageManager
 
         foreach (var file in files)
         {
-            if (Path.GetFileName(file)!= "AssetBundles.manifest" && Path.GetExtension(file) == ".manifest") continue;
+            //if (Path.GetFileName(file)!= "AssetBundles.manifest" && Path.GetExtension(file) == ".manifest") continue;
 
             var info = GetInfo(file);
             AllInfos.Infos.Add(info.Name, info);

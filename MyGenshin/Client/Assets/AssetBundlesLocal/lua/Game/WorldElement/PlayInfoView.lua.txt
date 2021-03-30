@@ -28,7 +28,11 @@ function PlayerInfoView:OnDestroy()
 end
 
 
-function PlayerInfoView:SetData(charinfo)
+function PlayerInfoView:SetData(charinfo,rev)
+    self.info=charinfo
+    if rev then
+        self.transform.localScale=Vector3(-1,1,1)
+    end
     self.play = charinfo
     self.Text_Name.text ='Lv.'.. charinfo.Level.. " ".. charinfo.Name
 end

@@ -36,8 +36,6 @@ function LoginBGView:AddEvent()
             UIManager:Show(loginView)
         end
     end
-
-    print(self.Button_Login)
     self:AddClickEvent(self.Button_Login, onClick)
     self:AddClickEvent(self.Button_Exit, onClick)
 end

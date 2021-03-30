@@ -141,6 +141,19 @@ function BagView:ClearChild()
     self.UIGroup_Group:ClearSingle()
 end
 
+function BagView:RemoveGrid(item)
+    local removeKey
+    for i, v in pairs(self.gird) do
+        if v == item then
+            UIManager:Close(v)
+            removeKey = i
+        end
+    end
+    if removeKey ~= nil then
+        table.remove(self.gird, removeKey)
+    end
+end
+
 function BagView:SetInfo(item, equip)
     require("Game.Common.UIDetialView")
     if self.detial == nil then

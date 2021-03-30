@@ -39,7 +39,7 @@ function BagGridView:AddEvent()
         BagCtrl:SetDelete(self.item, self.equip)
     end
     self.onStateChange = function(old, new)
-        if new ==UIState.Single and self.UIElement_Main.MultipleSelect==true  then
+        if new == UIState.Single and self.UIElement_Main.MultipleSelect == true then
             self.Image_MultipleSelect:GetComponent("CanvasGroup"):DOFade(0, 0.1)
             self.Image_MultipleSelectFrame:GetComponent("CanvasGroup"):DOFade(0, 0.1)
             self.Image_MultipleSelectFrame.transform:DOLocalMoveY(
@@ -63,7 +63,19 @@ function BagGridView:AddEvent()
     self.UIElement_Main.ActionOnSelect:AddListener(3, self.onSelect)
     self.UIElement_Main.ActionOnDeselect:AddListener(3, self.onDeselect)
     self.onItemChange = function(old, value)
-        self.Text_Text.text = value
+        if value == 0 then
+            BagCtrl:RemoveGrid(self.viewCfg.parent)
+        else
+            self.Text_Text.text = value
+        end
+    end
+
+    self.onEquipChange = function(old, value)
+        if value == nil then
+            BagCtrl:RemoveGrid(self.viewCfg.parent)
+        else
+            self:SetEquipData(value, self.group)
+        end
     end
 end
 
@@ -73,6 +85,14 @@ function BagGridView:SetItem(item)
     end
     self.item = item
     self.item.OnChange:AddListener(self.onItemChange)
+end
+
+function BagGridView:SetEquip(equip)
+    if self.equip ~= nil then
+        self.equip.OnValueChange:RemoveListener(self.onEquipChange)
+    end
+    self.equip = equip
+    self.equip.OnValueChange:AddListener(self.onEquipChange)
 end
 function BagGridView:OnDestroy()
     if self.item ~= nil then
@@ -85,6 +105,7 @@ function BagGridView:OnDestroy()
     self.UIElement_Main.ActionOnDeselect:RemoveListener(3, self.onDeselect)
 end
 function BagGridView:UIElementInit(group, selectable)
+    self.group = group
     self.UIElement_Main:Init(group, selectable)
     if selectable.MultipleSelect == true and self.UIElement_Main.currentState == UIState.Multiple then
         self.Image_MultipleSelect:GetComponent("CanvasGroup").alpha = 1
@@ -98,33 +119,30 @@ function BagGridView:SetItemData(item, group)
     self.itemDefine = item.Define
     self:SetItem(item)
     self:UIElementInit(group, item)
-    self.Image_Icon.sprite = ResMgr.GetSprite( item.Define.Resource)
+    self.Image_Icon.sprite = ResMgr.GetSprite(item.Define.Resource)
     self.Image_Icon:SetNativeSize()
     self:SetRare(item.Define.Rare)
     self.Text_Text.text = item.Count
-    
 end
 
 function BagGridView:SetEquipData(equip, group)
-    self.equip = equip
+    self:SetEquip(equip)
     self:UIElementInit(group, equip)
     self:SetRare(equip.Define.Rare)
     self.Text_Text.text = "Lv.1"
     self.Image_Icon.sprite = ResMgr.GetSprite(equip.Define.Resource)
-    self.Image_Icon.rectTransform.localScale=Vector3(1,1,1)
+    self.Image_Icon.rectTransform.localScale = Vector3(1, 1, 1)
     self.Image_Icon:SetNativeSize()
     self.Image_Icon.rectTransform.anchorMin = Vector2(0.5, 0)
     self.Image_Icon.rectTransform.anchorMax = Vector2(0.5, 1)
-    self.Image_Icon.rectTransform.offsetMin=Vector2(0,37)
-    self.Image_Icon.rectTransform.offsetMax=Vector2(0,-3)
-    local ration=Helper.AddAspectRatioFitter(self.Image_Icon.gameObject)
+    self.Image_Icon.rectTransform.offsetMin = Vector2(0, 37)
+    self.Image_Icon.rectTransform.offsetMax = Vector2(0, -3)
+    local ration = Helper.AddAspectRatioFitter(self.Image_Icon.gameObject)
     ration.aspectMode = AspectMode.HeightControlsWidth
-    ration.aspectRatio=0.953
-
-    
+    ration.aspectRatio = 0.953
 end
 
 function BagGridView:SetRare(n)
     AddStar(self.Transform_Star, n)
-    self.Image_Bg.sprite = ResMgr.GetSprite( UIConst.RareResource[n + 1])
+    self.Image_Bg.sprite = ResMgr.GetSprite(UIConst.RareResource[n + 1])
 end

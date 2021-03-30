@@ -7,7 +7,6 @@ local ctrls={}
 
 
 function LuaMain()
-    print("LuaMain:Init")
     Game:Init()
 end
 

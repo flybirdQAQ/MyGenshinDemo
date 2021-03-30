@@ -76,7 +76,6 @@ namespace Managers
             }
             else if (nStatus.Action == StatusAction.Delete)
             {
-
                 return RemoveEquip(nStatus.Id);
             }
             return false;
@@ -94,7 +93,14 @@ namespace Managers
 
         public bool RemoveEquip(int EquipId)
         {
-            return Equips.Remove(EquipId);
+            if (Equips.ContainsKey(EquipId))
+            {
+
+                Equips[EquipId].Remove();
+                return Equips.Remove(EquipId);
+            }
+
+            return false;
         }
 
         public bool WearEquip(Equip equip, int slot)

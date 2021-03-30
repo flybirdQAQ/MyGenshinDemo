@@ -1,8 +1,13 @@
-GlobleEvent=EventParse("Globle",{
-    'Update',
-     "LateUpdate",
-    'EnterLogin',
-    'EnterChrSelect',
-    'EnterGamePlaying',
-    'EnterMap'
-})
+GlobleEvent =
+    EventParse(
+    "Globle",
+    {
+        "Update",
+        "LateUpdate",
+        "EnterLogin",
+        "EnterChrSelect",
+        "EnterGamePlaying",
+        "LoadScene",
+        "EnterMap"
+    }
+)

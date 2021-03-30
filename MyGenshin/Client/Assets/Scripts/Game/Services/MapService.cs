@@ -44,6 +44,12 @@ namespace Services
             Debug.LogFormat("OnMapCharacterEnter:{0} [{1}]", response.Characters, response.mapId);
 
             Debug.Log($"CurrentCharacterID:{User.Instance.CurrentCharacter.Id}");
+
+            if (response.mapId != this.currentMapId)
+            {
+                EnterMap(response.mapId);
+                this.currentMapId = response.mapId;
+            }
             foreach (NCharacterInfo nCharacter in response.Characters)
             {
                 Debug.Log($"nCharacterID:{nCharacter.Id}");
@@ -53,11 +59,7 @@ namespace Services
                 }
                 CharacterManager.Instance.AddCharacter(nCharacter);
             }
-            if (response.mapId != this.currentMapId)
-            {
-                EnterMap(response.mapId);
-                this.currentMapId = response.mapId;
-            }
+
 
 
         }

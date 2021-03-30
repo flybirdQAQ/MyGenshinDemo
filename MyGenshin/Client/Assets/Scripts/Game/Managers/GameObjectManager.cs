@@ -14,9 +14,13 @@ namespace Managers
     {
 
         Dictionary<int, UnityEngine.GameObject> GameObects = new Dictionary<int, UnityEngine.GameObject>();
+        public Action<NCharacterInfo, Transform> LuaAddPlayerInfo;
+        public Action<Transform> LuaRemovePlayerInfo;
 
         protected override void OnStart()
         {
+            LuaAddPlayerInfo = LuaBehaviour.Instance.GetAction<Action<NCharacterInfo, Transform>>("AddPlayerInfo");
+            LuaRemovePlayerInfo = LuaBehaviour.Instance.GetAction<Action<Transform>>("RemovePlayerInfo");
             StartCoroutine(CreateCharacters());
             CharacterManager.Instance.OnCharacterEnter = this.OnCharacterEnter;
             CharacterManager.Instance.OnCharacterLeave = this.OnCharacterLeave;
@@ -33,8 +37,9 @@ namespace Managers
         }
         private void DestroyCharacter(GameObject character)
         {
-            Debug.LogFormat("DestoryCharacter:GameObject {0}", character.name);
+            //Debug.LogFormat("DestoryCharacter:GameObject {0}", character.name);
             //UIWorldElementsManager.Instance.RemoveCharacter(character.transform);
+            LuaRemovePlayerInfo(character.transform);
             Destroy(character);
         }
 
@@ -67,6 +72,7 @@ namespace Managers
                 }
                 GameObject go = (GameObject)Instantiate(obj, this.transform);
                 go.name = "Character_" + character.Info.Id + "_" + character.Info.Name;
+                LuaAddPlayerInfo?.Invoke(character.Info,go.transform);
                 GameObects[character.entityId] = go;
                 //UIWorldElementsManager.Instance.AddCharacter(go.transform, character);
 

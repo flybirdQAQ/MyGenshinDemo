@@ -1,4 +1,4 @@
-﻿#undef UNITY_EDITOR
+﻿//#undef UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -77,8 +77,8 @@ public static class ResMgr
         {
             allAssetBundle[asset_name] = LoadAB(asset_name);
         }
-        //Debug.Log($"path:{path}");
-        //Debug.Log(allAssetBundle[asset_name]);
+        Debug.Log($"path:{path}");
+        Debug.Log(allAssetBundle[asset_name]);
         obj =allAssetBundle[asset_name].LoadAsset<T>(Path.GetFileName(path));
      
 #endif
@@ -95,8 +95,8 @@ public static class ResMgr
     public static AssetBundle LoadAB(string asset_name)
     {
         //Debug.Log(SysDefine.PATH_ASSETBUNDLE + "/" + asset_name);
-        AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath+ "/" + asset_name);
-        
+        AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + asset_name);
+        //AssetBundle assetBundle = AssetBundle.LoadFromFile(SysDefine.PATH_ASSETBUNDLE + "/" + asset_name);
         if (assetBundle != null)
         {
             return assetBundle;

@@ -1,4 +1,4 @@
-﻿#undef UNITY_EDITOR
+﻿//#undef UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -92,11 +92,13 @@ public class GameStart : MonoSingleton<GameStart>
                         //如果EDITOR模式就跳过之前的
                         sliderView.gameObject.SetActive(true);
                         sliderView.ShowSlider();
+                        obj.SetActive(true);
 #else
                         uiTip.gameObject.SetActive(true);
                         Camera.main.gameObject.SetActive(true);
                         uiTip.Show(() =>
                         {
+                            obj.SetActive(true);
                             uiTip.Hide(() =>
                             {
                                 uiTip.gameObject.SetActive(false);
@@ -167,12 +169,12 @@ public class GameStart : MonoSingleton<GameStart>
                     {
                         currentSubState = SubState.Update;
                         LuaBehaviour.Instance.LuaEnvInit();
+                        this.gameObject.AddComponent<GameObjectManager>();
+                        this.gameObject.AddComponent<EntityManager>();
                         NPCManager.Instance.NpcInit();
                         sliderView.OnSliderHided += () =>
                         {
                             LuaBehaviour.Instance.CallLuaEvent("EnterLogin");
-
-                            //sliderView.Hide();
                         };
                         sliderView.HideSlider();
 
@@ -209,9 +211,9 @@ public class GameStart : MonoSingleton<GameStart>
 
     IEnumerator GameInit(Action<string, long, long> addData)
     {
+
         this.gameObject.AddComponent<SceneManager>();
-        this.gameObject.AddComponent<GameObjectManager>();
-        this.gameObject.AddComponent<EntityManager>();
+        this.gameObject.AddComponent<InputManager>();
         DontDestroyOnLoad(GameObject.Find("EventSystem"));
         yield return DataManager.Instance.LoadData(addData);
     }

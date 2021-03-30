@@ -798,7 +798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &867978385
 Transform:
   m_ObjectHideFlags: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
   global: 1
   sliderView: {fileID: 114462083798227993}
   uiTip: {fileID: 1276771945}
-  obj: {fileID: 0}
+  obj: {fileID: 867978384}
 --- !u!4 &1750924140
 Transform:
   m_ObjectHideFlags: 0

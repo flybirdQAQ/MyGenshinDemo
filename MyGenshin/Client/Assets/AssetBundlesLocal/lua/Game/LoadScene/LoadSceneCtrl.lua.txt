@@ -17,7 +17,7 @@ function LoadSceneCtrl:EventInit()
             UIManager:Close(self.LoadSceneView)
         end
     end
-    BindCSEvent(SceneMgr.Instance,'OnLoad',OnLoad)
+    GlobleEventManager:AddListener(GlobleEvent.LoadScene,OnLoad)
     BindCSEvent(SceneMgr.Instance,'OnProgress',OnProgress)
 end
 return LoadSceneCtrl

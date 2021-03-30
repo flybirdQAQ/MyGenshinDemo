@@ -1,12 +1,23 @@
-WorldElementCtrl={}
+WorldElementCtrl = {}
 
-require('Game.WorldElement.WorldElement')
-require('Game.WorldElement.NpcInfoView')
+require("Game.WorldElement.WorldElement")
+require("Game.WorldElement.NpcInfoView")
 require("Game.WorldElement.PlayInfoView")
 
 function WorldElementCtrl:Init()
-    self.AllWorldElement={}
+    self.AllWorldElement = {}
+
+    self:AddEvent()
 end
+
+function WorldElementCtrl:AddEvent()
+    local func = function () 
+        self:Clear()
+    end
+    GlobleEventManager:AddListener(GlobleEvent.LoadScene,func)
+
+end
+
 
 function AddChrInfo(npcctrl)
     WorldElementCtrl:AddChrInfo(npcctrl)
@@ -14,27 +25,49 @@ end
 
 
 function WorldElementCtrl:AddChrInfo(npcctrl)
-    local chrInfo= NpcInfoView:New(npcctrl.transform)
+    local chrInfo = NpcInfoView:New(npcctrl.transform)
     chrInfo:Show()
     chrInfo:SetData(npcctrl)
+
+    table.insert(self.AllWorldElement, chrInfo)
+end
+
+function AddPlayerInfo(info,transform)
+    WorldElementCtrl:AddPlayerInfo(info,transform)
+end
+
+function RemovePlayerInfo(transform)
+    WorldElementCtrl:RemovePlayerInfo(transform)
 end
 
 
 
-function WorldElementCtrl:AddPlayerInfo(info,transform)
-    local chrInfo= PlayerInfoView:New(transform)
+function WorldElementCtrl:AddPlayerInfo(info, transform, rev)
+    local chrInfo = PlayerInfoView:New(transform)
     chrInfo:Show()
-    chrInfo:SetData(info)
+    chrInfo:SetData(info, rev)
+    table.insert(self.AllWorldElement, chrInfo)
 end
 
 
+function WorldElementCtrl:RemovePlayerInfo(transform)
+    local removeKey
+    for i, v in pairs(self.AllWorldElement) do
+        if v.viewCfg.parentTransform == transform then
+            UIManager:Close(v)
+            removeKey = i
+        end
+    end
+    if removeKey ~= nil then
+        table.remove(self.AllWorldElement, removeKey)
+    end
+end
 
-
-
-
-
-
-
-
+function WorldElementCtrl:Clear()
+    for k,v in pairs(self.AllWorldElement) do 
+        v:Close()
+    end
+    self.AllWorldElement={}
+end
 
 return WorldElementCtrl

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GameServer.Managers
 {
-     class ItemManager
+    class ItemManager
     {
 
         public Character Owner;
@@ -21,7 +21,7 @@ namespace GameServer.Managers
         {
             this.Owner = character;
 
-            foreach (var item in character.Data.CharacterItems)
+            foreach (var item in character.Data.CharacterItems.Where(x => x.Count > 0))
             {
                 this.Items.Add(item.ItemID, new Item(item));
             }
@@ -35,22 +35,30 @@ namespace GameServer.Managers
             }
             else
             {
-                TCharacterItem TItem = new TCharacterItem()
+
+                TCharacterItem TItem = Owner.Data.CharacterItems.Where(x => x.ItemID == itemId && x.CharacterID == Owner.Id).FirstOrDefault();
+                if (TItem == null)
                 {
-                    CharacterID = Owner.Data.ID,
-                    Character = Owner.Data,
-                    ItemID = itemId,
-                    Count = count
-                };
-                Owner.Data.CharacterItems.Add(TItem);
+                    TItem = new TCharacterItem()
+                    {
+                        CharacterID = Owner.Data.ID,
+                        Character = Owner.Data,
+                        ItemID = itemId,
+                        Count = count
+                    };
+                    Owner.Data.CharacterItems.Add(TItem);
+                }
+                else
+                {
+                    TItem.Count = count;
+                }
                 item = new Item(TItem);
                 this.Items.Add(itemId, item);
-                
+
             }
             Owner.statusManager.AddItemChange(itemId, count);
-            //DBService.Instance.Save();
             return true;
-            
+
 
         }
 
@@ -92,8 +100,11 @@ namespace GameServer.Managers
             {
                 if (item.Count < count) return false;
                 item.Remove(count);
+                if (item.Count == 0)
+                {
+                    Items.Remove(itemId);
+                }
                 Owner.statusManager.AddItemChange(itemId, -count);
-                //DBService.Instance.Save();
                 return true;
             }
             return false;
@@ -105,8 +116,8 @@ namespace GameServer.Managers
                 list.Add(new NItemInfo()
                 {
                     Id = item.Value.Id,
-                    Count=item.Value.Count
-                }) ;
+                    Count = item.Value.Count
+                });
             }
         }
 

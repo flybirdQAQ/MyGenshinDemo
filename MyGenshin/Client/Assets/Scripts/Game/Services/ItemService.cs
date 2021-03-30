@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Managers;
 using Interface;
+using Entities;
 
 namespace Services
 {
@@ -72,7 +73,7 @@ namespace Services
                     netMessage.Request.itemSellRequest.nEquipInfos.Add(new NEquipInfo
                     {
                         Id = item.ID,
-                    });
+                    }) ;
                 }
             }
 

@@ -64,20 +64,20 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (!enable) return;
-        v = Input.GetAxis("Vertical");
-        h = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump")) jumpPressed = true;
+        v = InputManager.Instance.GetAxis("Vertical");
+        h = InputManager.Instance.GetAxis("Horizontal");
+        if (InputManager.Instance.GetButtonDown("Jump")) jumpPressed = true;
 
-        if (Input.GetButtonDown("Tab"))
+        if (InputManager.Instance.GetButtonDown("Tab"))
         {
             Battle = !Battle;
 
         }
-        if (Input.GetButtonDown("L"))
+        if (InputManager.Instance.GetButtonDown("L"))
         {
             run = !run;
         }
-        sprint = Input.GetButton("Shift");
+        sprint = InputManager.Instance.GetButton("Shift");
 
     }
     void LateUpdate()

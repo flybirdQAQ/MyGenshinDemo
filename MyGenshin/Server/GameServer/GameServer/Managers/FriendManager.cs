@@ -209,12 +209,16 @@ namespace GameServer.Managers
 
             }
         }
-        public static void FriendRemoveNoisy(int owner)
+        public static void FriendRemoveNoisy(int owner,bool isfriend=false)
         {
             NetConnection<NetSession> session;
             if (SessionManager.Instance.GetSession(owner, out session))
             {
                 session.Session.Character.friendManager.SetDirty();
+                if (isfriend)
+                {
+                    MessageService.Instance.SendUpdate(session);
+                }
             }
         }
         public void SetDirty()

@@ -36,6 +36,7 @@ function LoginView:AddEvent()
             UIManager:Close(self)
         end
     end
+    print(self.Button_Enter)
     self:AddClickEvent(self.Button_Enter, onClick)
     self:AddClickEvent(self.Button_Close, onClick)
     self:AddClickEvent(self.Button_Register, onClick)

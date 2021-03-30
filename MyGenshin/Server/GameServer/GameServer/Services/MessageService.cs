@@ -69,8 +69,8 @@ namespace GameServer.Services
             {
                 DBService.Instance.Save();
                 FriendManager.FriendRemoveNoisy(sender.Session.Character.Id);
-                FriendManager.FriendRemoveNoisy(message.friendId);
-                
+                FriendManager.FriendRemoveNoisy(message.friendId,true);
+               
             }
             sender.Session.Response.friendRemove = new FriendRemoveResponse()
             {
