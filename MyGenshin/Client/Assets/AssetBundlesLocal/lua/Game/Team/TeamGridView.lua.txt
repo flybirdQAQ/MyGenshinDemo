@@ -12,10 +12,43 @@ function TeamGridView:Construtor(parent)
     }
 end
 
+function TeamGridView:AddEvent()
+    local OnClick = function(btn)
+        if btn == self.Button_Team then
+            local leaveTeam = function()
+                TeamCtrl:LeaveTeam(self.char.Id)
+                UICtrl:CloseSelect()
+            end
+            local setLeader = function()
+                TeamCtrl:SetLeader(self.char.Id)
+                UICtrl:CloseSelect()
+            end
+            UICtrl:ShowSelect()
+            --自己是队长
+            if self.leader == User.Instance.CurrentID then
+                --点击自己
+                if self.char.Id == User.Instance.CurrentID then                   
+                    UICtrl:AddButton("退出队伍", leaveTeam)
+                --点击别人
+                else
+                    UICtrl:AddButton("设为队长", setLeader)
+                    UICtrl:AddButton("逐出队伍", leaveTeam)
+                end
+            else
+                if self.char.Id == User.Instance.CurrentID then                   
+                    UICtrl:AddButton("退出队伍", leaveTeam)
+                --点击别人
+                end
+            end
+        end
+    end
 
+    self:AddClickEvent(self.Button_Team, OnClick)
+end
 
-
-function TeamGridView:SetData(i,charInfo,leader)
-    self.Image_P.sprite=ResMgr.GetSprite(TeamConst.Resource[i+1])
-    self.TextMeshProUGUI_Name.text=charInfo.Name
+function TeamGridView:SetData(i, charInfo, team)
+    self.char = charInfo
+    self.leader = team.Leader
+    self.Image_P.sprite = ResMgr.GetSprite(TeamConst.Resource[i + 1])
+    self.TextMeshProUGUI_Name.text = charInfo.Name
 end

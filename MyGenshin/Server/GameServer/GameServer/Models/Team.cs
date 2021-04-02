@@ -25,6 +25,20 @@ namespace GameServer.Models
     {
         public override string Message => "没有这个成员";
     }
+    class NotLeaderException : Exception
+    {
+        public override string Message => "你不是队长";
+    }
+
+    class AlreadyLeaderException : Exception
+    {
+        public override string Message => "已经是队长了";
+    }
+
+    class NoTeamException : Exception
+    {
+        public override string Message => "没有队伍";
+    }
 
     class Team
     {
@@ -32,7 +46,7 @@ namespace GameServer.Models
         public int Count => Members.Count;
         const int Max = 4;
         public int TimeStamp =0;
-        Character Leader;
+        public Character Leader;
 
         List<Character> Members = new List<Character>();
 
@@ -44,7 +58,7 @@ namespace GameServer.Models
                 Leader = Leader.Id,
 
             };
-            info.Members.AddRange(Members.Select(x => x.Info));
+            info.Members.AddRange(Members.Select(x => x.GetSampleInfo()));
             return info;
         }
         public Team ( Character leader)
@@ -53,6 +67,10 @@ namespace GameServer.Models
         }
 
 
+        public List<Character> GetMember()
+        {
+            return Members;
+        }
         public void AddMember(Character member)
         {
             if (Count >= Max)
@@ -65,8 +83,25 @@ namespace GameServer.Models
             }
             Members.Add(member);
             member.team = this;
-            member.teamTimeStamp = TimeStamp;
+            member.teamTimeStamp = TimeStamp-1;
             TimeStamp = Time.GetTimeStamp();
+        }
+
+        public bool HasMember(Character member)
+        {
+            return Members.Contains(member);
+        }
+
+        public void SetLeader(Character member)
+        {
+            if (!Members.Remove(member))
+            {
+                throw new NoMemberException();
+            }
+            Leader = member;
+            Members.Insert(0, member);
+            TimeStamp = Time.GetTimeStamp();
+
         }
 
         public void RemoveMember(Character member)
@@ -76,6 +111,7 @@ namespace GameServer.Models
                 throw new NoMemberException();
             }
             member.team = null;
+          
             if (member == Leader)
             {
                 if (Count > 0)

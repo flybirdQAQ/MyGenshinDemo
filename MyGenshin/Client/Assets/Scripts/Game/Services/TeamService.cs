@@ -53,7 +53,6 @@ namespace Services
                     }
                 }
             };
-
             NetClient.Instance.SendMessage(message);
         }
 
@@ -66,6 +65,10 @@ namespace Services
             if (message.Result == Result.Failed)
             {
                 LuaBehaviour.Instance.SafeDoString($"UIManager:ShowDaleyTip('{message.Errormsg}')");
+            }
+            else
+            {
+                LuaBehaviour.Instance.SafeDoString($"UIManager:ShowDaleyTip('组队成功')");
             }
            
         }
@@ -88,14 +91,62 @@ namespace Services
             NetClient.Instance.SendMessage(message);
         }
 
+
+
         private void OnTeamLeaderResponse(object sender, TeamLeaderResponse message)
         {
-            throw new NotImplementedException();
+            if (message.Result == Result.Failed)
+            {
+                LuaBehaviour.Instance.SafeDoString($"UIManager:ShowDaleyTip('{message.Errormsg}')");
+            }
         }
         private void OnTeamLeaveResponse(object sender, TeamLeaveResponse message)
         {
-            throw new NotImplementedException();
+            if (message.Result == Result.Failed)
+            {
+                LuaBehaviour.Instance.SafeDoString($"UIManager:ShowDaleyTip('{message.Errormsg}')");
+            }
         }
+
+
+
+        public void SendTeamLeaveRequest(int id)
+        {
+            NetMessage message = new NetMessage()
+            {
+
+                Request = new NetMessageRequest()
+                {
+                    teamLeave = new TeamLeaveRequest()
+                    {
+                        characterId = id
+                    }
+                }
+            };
+            NetClient.Instance.SendMessage(message);
+
+        }
+
+        public void SendTeamLeaderRequest( int id)
+        {
+            NetMessage message = new NetMessage()
+            {
+
+                Request = new NetMessageRequest()
+                {
+                    teamLeader = new TeamLeaderRequest()
+                    {                      
+                        characterId = id
+                    }
+                }
+            };
+            NetClient.Instance.SendMessage(message);
+
+        }
+
+
+
+
         private void OnTeamInfoResponse(object sender, TeamInfoResponse message)
         {
             TeamManager.Instance.UpdateTeam(message.Team);

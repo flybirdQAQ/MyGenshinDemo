@@ -46,7 +46,10 @@ namespace Network
 
 
 
-
+        public bool IsNullResponse()
+        {
+            return response == null;
+        }
 
 
 

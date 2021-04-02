@@ -196,8 +196,12 @@ namespace GameServer.Services
 
         public void SendUpdate(NetConnection<NetSession> sender)
         {
-            sender.Session.Response.Update = new StatusUpdate();
-            sender.SendResponse();
+            //如果非空 说明已经等会会返回 不需要状态更新
+            if (sender.Session.IsNullResponse())
+            {
+                sender.Session.Response.Update = new StatusUpdate();
+                sender.SendResponse();
+            }
         }
     }
 }

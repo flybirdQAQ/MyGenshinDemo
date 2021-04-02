@@ -43,12 +43,97 @@ namespace GameServer.Services
 
         private void OnTeamLeader(NetConnection<NetSession> sender, TeamLeaderRequest message)
         {
-            throw new NotImplementedException();
+            sender.Session.Response.teamLeader = new TeamLeaderResponse();
+            Log.Info($"OnTeamLequestRequest ID:{message.characterId}");
+            try
+            {   //如果没有队伍
+                if (sender.Session.Character.team == null)
+                {
+                    throw new NoTeamException();
+                }
+                //如果不是队长
+                if (sender.Session.Character.team.Leader != sender.Session.Character)
+                {
+                    throw new NotLeaderException();
+                }
+                //
+                if (sender.Session.Character.Id == message.characterId)
+                {
+                    throw new AlreadyLeaderException();
+
+                }
+                //如果没有这个玩家
+                NetConnection<NetSession> session;
+                if (!SessionManager.Instance.GetSession(message.characterId, out session))
+                {
+                    throw new NoSessionException();
+                }
+                //如果队里没有这个人
+                if (!sender.Session.Character.team.HasMember(session.Session.Character))
+                {
+                    throw new NoMemberException();
+                }
+
+                TeamManager.Instance.SetLeader(session.Session.Character);
+               
+            }
+
+            catch (Exception e)
+            {
+                sender.Session.Response.teamLeader.Result = Result.Failed;
+                sender.Session.Response.teamLeader.Errormsg = e.Message;
+            }
+            sender.SendResponse();
         }
 
         private void OnTeamLeave(NetConnection<NetSession> sender, TeamLeaveRequest message)
         {
-            throw new NotImplementedException();
+
+            sender.Session.Response.teamLeave = new TeamLeaveResponse();
+            Log.Info($"OnTeamLequestRequest ID:{message.characterId}");
+            try
+            {   //如果没有队伍
+                if (sender.Session.Character.team == null)
+                {
+                    throw new NoTeamException();
+                }
+                //如果是自己退队
+                if (sender.Session.Character.Id == message.characterId)
+                {
+
+                    TeamManager.Instance.RemoveTeamMember(sender.Session.Character);                   
+                }
+                //如果是队长踢人
+                else
+                {
+                    //如果不是队长
+                    if(sender.Session.Character.team.Leader!= sender.Session.Character)
+                    {
+                        throw new NotLeaderException();
+                    }
+                    //如果没有这个玩家
+                    NetConnection<NetSession> session;
+                    if (!SessionManager.Instance.GetSession(message.characterId,out session))
+                    {
+                        throw new NoSessionException();
+                    }
+                    //如果队里没有这个人
+                    if (!sender.Session.Character.team.HasMember(session.Session.Character))
+                    {
+                        throw new NoMemberException();
+                    }
+                    TeamManager.Instance.RemoveTeamMember(session.Session.Character);
+                    MessageService.Instance.SendUpdate(session);
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                sender.Session.Response.teamLeave.Result = Result.Failed;
+                sender.Session.Response.teamLeave.Errormsg = e.Message;
+            }
+            sender.SendResponse();
         }
 
         private void OnTeamInfo(NetConnection<NetSession> sender, TeamInfoRequest message)
@@ -99,10 +184,10 @@ namespace GameServer.Services
                     try
                     {
                         TeamManager.Instance.AddTeamMember(target.Session.Character, sender.Session.Character);
-                        sender.Session.Response.teamInviteResponse.Result = Result.Success;                       
+                        sender.Session.Response.teamInviteResponse.Result = Result.Success;
                         target.Session.Response.teamInviteResponse.Result = Result.Success;
                     }
-                    catch(FullTeamException e)
+                    catch (FullTeamException e)
                     {
                         sender.Session.Response.teamInviteResponse.Errormsg = e.Message;
                         sender.Session.Response.teamInviteResponse.Result = Result.Failed;

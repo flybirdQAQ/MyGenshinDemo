@@ -1,6 +1,7 @@
 ﻿using Common;
 using GameServer.Entities;
 using GameServer.Models;
+using GameServer.Services;
 using Network;
 using SkillBridge.Message;
 using System;
@@ -27,8 +28,26 @@ namespace GameServer.Managers
         }
 
 
-        //public void RemoveTeamMember()
+        public void RemoveTeamMember(Character target)
+        {
+            Team team = target.team;
+            team.RemoveMember(target);
+            SendUpdate(team);
+        }
+        public void SetLeader(Character target)
+        {
+            Team team = target.team;
+            team.SetLeader(target);
+            SendUpdate(team);
+        }
 
+        private void SendUpdate(Team team)
+        {
+            foreach (var character in team.GetMember())
+            {
+                MessageService.Instance.SendUpdate(character.Connection);
+            }
+        }
         public Team CreateTeam(Character character)
         {
 

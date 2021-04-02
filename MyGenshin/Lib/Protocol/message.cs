@@ -1338,9 +1338,6 @@ namespace SkillBridge.Message
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
-        [global::ProtoBuf.ProtoMember(1, Name = @"team_id")]
-        public int TeamId { get; set; }
-
         [global::ProtoBuf.ProtoMember(2)]
         public int characterId { get; set; }
 

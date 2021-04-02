@@ -38,6 +38,15 @@ function TeamCtrl:ShowTeam()
 
 end
 
+function TeamCtrl:LeaveTeam( id)
+    TeamService.Instance:SendTeamLeaveRequest(id)
+end
+
+function TeamCtrl:SetLeader( id)
+    TeamService.Instance:SendTeamLeaderRequest(id)
+end
+
+
 function TeamCtrl:GetInivteCallback(id)
 
     local callback= function()      

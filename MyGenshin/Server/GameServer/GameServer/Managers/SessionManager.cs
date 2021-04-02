@@ -11,7 +11,7 @@ namespace GameServer.Managers
 
     class  NoSessionException : Exception
     {
-        public override string Message =>"找不到对应Session";
+        public override string Message =>"不存在或不在线的玩家";
     }
 
     class SessionManager : Singleton<SessionManager>

@@ -628,7 +628,6 @@ message TeamInfoResponse
 
 message TeamLeaveRequest
 {
-	int32 team_id = 1;
 	int32 characterId = 2;
 }
 

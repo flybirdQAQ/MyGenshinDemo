@@ -29,13 +29,12 @@ function TeamView:Update(team)
     self:Clear()
     if team==nil then  return end
     for i,v in pairs(team.Members) do 
-
         local warp =WarpView:New(self,self.Transform_Content)
         UIManager:Show(warp)
         table.insert(self.chars,warp)
         local grid = TeamGridView:New(warp)
         UIManager:Show(grid)
-        grid:SetData(i,v,team.Leader)
+        grid:SetData(i,v,team)
     end
 end
 

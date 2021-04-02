@@ -176,6 +176,7 @@ namespace GameServer.Services
             Log.Info($"OnGameEnter Id: {character.Id} EntityId:{character.Info.EntityId}");
             MapManager.Instance[tchr.MapID].CharacterEnter(sender, character);
             sender.Session.Character = character;
+            character.Connection = sender;
             sender.Session.postProcesser = character;
 
         }

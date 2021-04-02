@@ -9,11 +9,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Network;
 namespace GameServer.Entities
 {
     class Character : CharacterBase, IPostProcess
     {
+
+
+
+        public NetConnection<NetSession> Connection;
         public TCharacter Data;
 
         public ItemManager itemManager;
@@ -73,12 +77,31 @@ namespace GameServer.Entities
             }
         }
 
+
+        public NCharacterInfo GetSampleInfo()
+        {
+
+            return new NCharacterInfo()
+            {
+                Id = Info.Id,
+                EntityId = Info.EntityId,
+                ConfigId = Info.ConfigId,
+                Class = Info.Class,
+                Level = Info.Level,
+                Type = Info.Type,
+                Name = Info.Name,
+                mapId = Info.mapId,
+
+            };
+
+        }
+
         public void PostProcess(NetMessage message)
         {
             this.statusManager.PostProcess(message);
             this.messageManager.PostProcess(message);
             this.friendManager.PostProcess(message);
-
+            //如果有队伍 且时间戳低于队伍时间戳
             if (team != null && teamTimeStamp < team.TimeStamp)
             {
                 message.Response.teamInfo = new TeamInfoResponse()
@@ -86,6 +109,16 @@ namespace GameServer.Entities
                     Team = team.GetInfo(),
                     Result = Result.Success
                 };
+            }
+            //如果没队伍 且时间戳不为零  则说明刚离队
+            else if (team == null && teamTimeStamp != 0)
+            {
+                message.Response.teamInfo = new TeamInfoResponse()
+                {
+                    Team = null,
+                    Result = Result.Success
+                };
+                teamTimeStamp = 0;
             }
         }
 
@@ -95,6 +128,10 @@ namespace GameServer.Entities
         public void Clear()
         {
             this.friendManager.OfflineNoisy();
+            if (this.team != null)
+            {
+                TeamManager.Instance.RemoveTeamMember(this);
+            }
 
         }
     }
